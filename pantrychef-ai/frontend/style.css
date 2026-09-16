@@ -1,0 +1,350 @@
+/* ---------------------------------------------------------------------
+   PantryChef AI — design tokens
+   A kitchen corkboard: deep botanical-green backdrop, cream index card,
+   mustard-gold accent, a thin rust pin. Display face Fraunces (a warm,
+   slightly editorial serif) paired with Inter for body and IBM Plex Mono
+   for quantities — like handwriting on a recipe card.
+------------------------------------------------------------------------ */
+:root {
+  --ink-green: #16261C;
+  --ink-green-deep: #0F1B14;
+  --paper: #F3ECD8;
+  --paper-soft: #EFE6CC;
+  --ink: #241C11;
+  --ink-muted: #5B5240;
+  --gold: #D6A419;
+  --gold-deep: #B4890F;
+  --rust: #B5502D;
+  --sage: #4C6650;
+  --line: rgba(36, 28, 17, 0.14);
+
+  --font-display: "Fraunces", serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --radius-card: 6px;
+  --shadow-card: 0 18px 40px -12px rgba(0,0,0,0.45), 0 2px 6px rgba(0,0,0,0.2);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(214,164,25,0.08), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(76,102,80,0.25), transparent 55%),
+    var(--ink-green);
+  color: var(--paper);
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.board {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+}
+
+/* ---------- header ---------- */
+.board__header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.brand__mark {
+  color: var(--gold);
+  font-size: 0.7em;
+}
+.brand__ai {
+  color: var(--gold);
+  font-style: italic;
+  font-weight: 500;
+  margin-left: 4px;
+}
+.brand__tag {
+  margin: 8px 0 0;
+  color: rgba(243,236,216,0.72);
+  font-size: 15px;
+}
+
+/* ---------- layout ---------- */
+.layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; }
+}
+
+/* ---------- notepad (input) ---------- */
+.notepad {
+  position: relative;
+  background: var(--paper-soft);
+  color: var(--ink);
+  border-radius: var(--radius-card);
+  padding: 26px 24px 22px;
+  box-shadow: var(--shadow-card);
+  transform: rotate(-0.6deg);
+}
+.notepad__pin {
+  position: absolute;
+  top: -9px;
+  left: 28px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #E8674A, var(--rust));
+  box-shadow: 0 3px 5px rgba(0,0,0,0.35);
+}
+.notepad__title {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 600;
+  margin: 4px 0 18px;
+}
+.field { display: block; margin-bottom: 14px; }
+.field__label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  margin-bottom: 6px;
+}
+.field__label em { text-transform: none; font-style: normal; opacity: 0.7; }
+.field textarea,
+.field input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  color: var(--ink);
+  background: rgba(255,255,255,0.55);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 9px 11px;
+  resize: vertical;
+}
+.field textarea:focus,
+.field input:focus { background: #fff; }
+.field-row { display: flex; gap: 12px; }
+.field--narrow { flex: 0 0 84px; }
+
+.btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14.5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 11px 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.12s ease, filter 0.15s ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn--primary {
+  width: 100%;
+  background: var(--gold);
+  color: var(--ink-green-deep);
+}
+.btn--primary:hover { filter: brightness(1.06); }
+.btn--primary:disabled { opacity: 0.65; cursor: progress; }
+.btn__spinner {
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  border: 2px solid rgba(15,27,20,0.35);
+  border-top-color: var(--ink-green-deep);
+  display: none;
+  animation: spin 0.7s linear infinite;
+}
+.btn--primary.is-loading .btn__spinner { display: inline-block; }
+.btn--primary.is-loading .btn__label { opacity: 0.85; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.form-error {
+  color: var(--rust);
+  font-size: 13px;
+  margin: 10px 0 0;
+  font-weight: 600;
+}
+
+.notepad__hints {
+  margin: 18px 0 0;
+  padding-left: 18px;
+  font-size: 12.5px;
+  color: var(--ink-muted);
+}
+.notepad__hints li { margin-bottom: 4px; }
+
+/* ---------- recipe card ---------- */
+.card-wrap { display: flex; flex-direction: column; gap: 18px; }
+
+.card {
+  position: relative;
+  min-height: 380px;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 34px 36px 30px;
+}
+.card__stitch {
+  position: absolute;
+  inset: 10px;
+  border: 1.5px dashed rgba(36,28,17,0.18);
+  border-radius: 4px;
+  pointer-events: none;
+}
+.card__empty {
+  height: 100%;
+  min-height: 310px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  color: var(--ink-muted);
+  font-size: 15px;
+  max-width: 320px;
+  margin: 0 auto;
+}
+.card__empty-icon { font-size: 34px; }
+
+.card__content { font-size: 15.5px; }
+.card__content h1 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 6px;
+  color: var(--ink);
+}
+.card__content h2 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--sage);
+  margin: 22px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+}
+.card__content p { margin: 0 0 10px; color: var(--ink); }
+.card__content ul, .card__content ol { margin: 0; padding-left: 22px; }
+.card__content li { margin-bottom: 5px; }
+.card__content ul li::marker { color: var(--gold-deep); }
+.card__content ul { font-family: var(--font-mono); font-size: 13.5px; }
+.card__content ol { font-family: var(--font-body); }
+.card__content strong { color: var(--ink); }
+.card__content .tip {
+  margin-top: 4px;
+  padding: 10px 14px;
+  background: var(--paper-soft);
+  border-left: 3px solid var(--gold);
+  border-radius: 3px;
+  font-size: 14px;
+}
+.cursor-blink {
+  display: inline-block;
+  width: 8px; height: 1em;
+  background: var(--gold-deep);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 0.9s steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ---------- chat panel ---------- */
+.chat-panel {
+  background: rgba(243,236,216,0.06);
+  border: 1px solid rgba(243,236,216,0.14);
+  border-radius: var(--radius-card);
+  padding: 16px 18px 14px;
+}
+.chat-panel__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 15px;
+  margin: 0 0 10px;
+  color: rgba(243,236,216,0.85);
+}
+.chat-log {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  padding-right: 4px;
+}
+.chat-msg {
+  font-size: 13.5px;
+  padding: 8px 11px;
+  border-radius: 5px;
+  line-height: 1.45;
+  max-width: 92%;
+}
+.chat-msg--user {
+  align-self: flex-end;
+  background: var(--gold);
+  color: var(--ink-green-deep);
+  font-weight: 500;
+}
+.chat-msg--assistant {
+  align-self: flex-start;
+  background: rgba(243,236,216,0.1);
+  color: var(--paper);
+}
+.chat-form { display: flex; gap: 8px; }
+.chat-form input {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--paper);
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(243,236,216,0.2);
+  border-radius: 4px;
+  padding: 9px 11px;
+}
+.chat-form input::placeholder { color: rgba(243,236,216,0.4); }
+.btn--ghost {
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+}
+.btn--ghost:hover { background: rgba(214,164,25,0.12); }
+
+/* ---------- footer ---------- */
+.board__footer {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 12px;
+  color: rgba(243,236,216,0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn__spinner, .cursor-blink { animation: none; }
+}

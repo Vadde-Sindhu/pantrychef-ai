@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PantryChef AI — cook what you've got</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="board">
+
+  <header class="board__header">
+    <div class="brand">
+      <span class="brand__mark" aria-hidden="true">✳</span>
+      <span class="brand__name">PantryChef<span class="brand__ai">AI</span></span>
+    </div>
+    <p class="brand__tag">Tell Chef&nbsp;Nova what's in your kitchen — get a recipe, live.</p>
+  </header>
+
+  <main class="layout">
+
+    <!-- LEFT: input notepad -->
+    <section class="notepad" aria-label="Recipe request form">
+      <div class="notepad__pin" aria-hidden="true"></div>
+      <h2 class="notepad__title">What's in your pantry?</h2>
+
+      <form id="recipe-form">
+        <label class="field">
+          <span class="field__label">Ingredients you have <em>(required)</em></span>
+          <textarea id="ingredients" rows="3" placeholder="e.g. chickpeas, spinach, coconut milk, garlic, rice" required></textarea>
+        </label>
+
+        <div class="field-row">
+          <label class="field">
+            <span class="field__label">Dietary restrictions</span>
+            <input id="dietary" type="text" placeholder="e.g. vegetarian, nut-free" />
+          </label>
+          <label class="field field--narrow">
+            <span class="field__label">Servings</span>
+            <input id="servings" type="number" min="1" max="12" value="2" />
+          </label>
+        </div>
+
+        <label class="field">
+          <span class="field__label">Cuisine preference</span>
+          <input id="cuisine" type="text" placeholder="e.g. Thai, Italian, no preference" />
+        </label>
+
+        <button type="submit" id="generate-btn" class="btn btn--primary">
+          <span class="btn__label">Cook up a recipe</span>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+        <p id="form-error" class="form-error" role="alert" hidden></p>
+      </form>
+
+      <ul class="notepad__hints">
+        <li>List whatever you have — Chef Nova will fill in common staples.</li>
+        <li>Leave dietary or cuisine blank for no preference.</li>
+      </ul>
+    </section>
+
+    <!-- RIGHT: recipe card -->
+    <section class="card-wrap" aria-label="Generated recipe">
+      <div id="recipe-card" class="card card--empty">
+        <div class="card__stitch" aria-hidden="true"></div>
+        <div id="card-empty-state" class="card__empty">
+          <span class="card__empty-icon" aria-hidden="true">🍳</span>
+          <p>Your recipe will appear here, streaming in as Chef&nbsp;Nova writes it.</p>
+        </div>
+        <div id="card-content" class="card__content" hidden></div>
+      </div>
+
+      <!-- Ask Chef Nova -->
+      <div id="chat-panel" class="chat-panel" hidden>
+        <h3 class="chat-panel__title">Ask Chef Nova a follow-up</h3>
+        <div id="chat-log" class="chat-log" aria-live="polite"></div>
+        <form id="chat-form" class="chat-form">
+          <input id="chat-input" type="text" placeholder="e.g. Can I swap the rice for quinoa?" autocomplete="off" />
+          <button type="submit" class="btn btn--ghost">Ask</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="board__footer">
+    <span>Built with Vibe Coding · FastAPI + Claude · streamed live</span>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
